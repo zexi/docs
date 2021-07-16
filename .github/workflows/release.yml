@@ -6,6 +6,7 @@ on:
       - release/*  # Set a branch to deploy
       #- master  # Set a branch to deploy
       #- feature/*  # Set a branch to deploy
+      - deploy-aliyun-oss
 
 jobs:
   build:
@@ -51,3 +52,28 @@ jobs:
         allow_empty_commit: true
         cname: www.cloudpods.org
         publish_branch: master
+
+    - name: Publish site to aliyun OSS
+      uses: fangbinwei/aliyun-oss-website-action@v1.2.2
+      with:
+        # aliyun config
+        accessKeyId: ${{ secrets.ACCESS_KEY_ID }}
+        accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
+        bucket: ${{ secrets.BUCKET }}
+        # deploy config
+        endpoint: https://oss-cn-hongkong.aliyuncs.com
+        folder: public
+
+    # - name: Publish site to aliyun OSS
+      # uses: zexi/deploy-aliyun-oss@main
+      # with:
+        # # aliyun config
+        # region: oss-cn-hongkong.aliyuncs.com
+        # access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+        # access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+        # bucket: ${{ secrets.BUCKET }}
+        # secure: true
+        # # deploy config
+        # entry: public/**/*
+        # remote-dir: /
+        # path-rewrite: ^public/
